@@ -228,6 +228,66 @@ public static class Tools{
 			Debug.LogError("can't find material:" + materialName);
 		}
 	}
+
+	/// <summary>
+	/// Instantiate an object by path and add it to the specified parent.
+	/// </summary>
+	public static GameObject AddNGUIChild(GameObject gobjParent, string path){
+		GameObject r = null;
+		GameObject gobjPrefab = LoadResourcePrefab(path);
+		if(gobjParent != null && gobjPrefab != null){
+			 r = NGUITools.AddChild(gobjParent, gobjPrefab);
+		}else{
+			Debug.LogError("Error In AddNGUIChild");
+		}
+		return r;
+	}
+	
+	public static string Num2RomanTxt(int n){
+	  int[] arabic = new int[13];
+	  string[] roman = new string[13];
+	  int i = 0;
+	  string o = "";
+	
+	  arabic[0] = 1000;
+	  arabic[1] = 900;
+	  arabic[2] = 500;
+	  arabic[3] = 400;
+	  arabic[4] = 100;
+	  arabic[5] = 90;
+	  arabic[6] = 50;
+	  arabic[7] = 40;
+	  arabic[8] = 10;
+	  arabic[9] = 9;
+	  arabic[10] = 5;
+	  arabic[11] = 4;
+	  arabic[12] = 1;
+	
+	  roman[0] = "M";
+	  roman[1] = "CM";
+	  roman[2] = "D";
+	  roman[3] = "CD";
+	  roman[4] = "C";
+	  roman[5] = "XC";
+	  roman[6] = "L";
+	  roman[7] = "XL";
+	  roman[8] = "X";
+	  roman[9] = "IX";
+	  roman[10] = "V";
+	  roman[11] = "IV";
+	  roman[12] = "I";
+	
+	  while (n > 0)
+	  {
+		  while (n >= arabic[i])
+		  {
+		  n = n - arabic[i];
+		  o = o + roman[i];
+		  }
+		  i++;
+	  }
+	  return o;
+	}
 }
 
 public class BtnAction{
