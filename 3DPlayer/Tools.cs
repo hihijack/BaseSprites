@@ -288,6 +288,38 @@ public static class Tools{
 	  }
 	  return o;
 	}
+ public static bool IsTouchLayer(Camera cameraSeeTheLayer, string layer)
+    {
+        bool r = false;
+        string strLayer = "";
+        Vector3 posMouse = Input.mousePosition;
+        posMouse.z = 10;
+
+        Ray ray = cameraSeeTheLayer.ScreenPointToRay(posMouse);
+
+        RaycastHit[] rhs;
+        rhs = Physics.RaycastAll(ray);
+        if (rhs != null)
+        {
+            foreach (RaycastHit rh in rhs)
+            {
+                GameObject gobjHit = rh.collider.gameObject;
+                if (gobjHit != null)
+                {
+                    strLayer += LayerMask.LayerToName(gobjHit.layer);
+                }
+            }
+        }
+
+        if (!string.IsNullOrEmpty(strLayer))
+        {
+            if (strLayer.Contains(layer))
+            {
+                r = true;
+            }
+        }
+        return r;
+    }
 }
 
 public class BtnAction{
