@@ -320,6 +320,21 @@ public static class Tools{
         }
         return r;
     }
+public static Collider GetColliderInDirection(GameObject ori, Vector3 direction, float distance, string layermaskname)
+    {
+        Collider c = null;
+        Debug.DrawRay(ori.transform.position, direction);
+        RaycastHit[] rhs = Physics.RaycastAll(ori.transform.position, direction, distance, 1 << LayerMask.NameToLayer(layermaskname));
+        float minDistance = 1000;
+        foreach (RaycastHit rh in rhs)
+        {
+            if(rh.distance < minDistance){
+                minDistance = rh.distance;
+                c = rh.collider;
+            }
+        }
+        return c;
+    }
 }
 
 public class BtnAction{
