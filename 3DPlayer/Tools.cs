@@ -335,6 +335,21 @@ public static Collider GetColliderInDirection(GameObject ori, Vector3 direction,
         }
         return c;
     }
+	 /// <summary>
+    /// 获取多物体边界
+    /// </summary>
+    /// <param name="gobjs"></param>
+    /// <returns></returns>
+    public static Bounds GetBoundsOfMultiGobj(GameObject[] gobjs)
+    {
+        GameObject gobjOri = gobjs[0];
+        Bounds boundOri = gobjOri.renderer.bounds;
+        foreach (GameObject gobjTemp in gobjs)
+        {
+            boundOri.Encapsulate(gobjTemp.renderer.bounds);
+        }
+        return boundOri;
+    }
 }
 
 public class BtnAction{
