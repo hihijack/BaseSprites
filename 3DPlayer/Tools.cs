@@ -358,6 +358,27 @@ public static Collider GetColliderInDirection(GameObject ori, Vector3 direction,
         v2.z = 0;
         gobj2d.transform.position = v2;
     }
+
+	/// <summary>
+	/// 是否命中几率
+	/// </summary>
+	/// <returns>
+	/// <c>true</c> if this instance is hit odds the specified odds; otherwise, <c>false</c>.
+	/// </returns>
+	/// <param name='odds'>
+	/// If set to <c>true</c> odds.
+	/// </param>
+	public static bool IsHitOdds(int odds){
+		bool r = false;
+		if(odds >= 0 && odds <= 100){
+			System.Random ran = new System.Random();
+			int ranVal = ran.Next(1, 101);
+			r = (odds >= ranVal);
+		}else{
+			Debug.LogError("error");
+		}
+		return r;
+	}
 }
 
 public class BtnAction{
