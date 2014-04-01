@@ -350,6 +350,14 @@ public static Collider GetColliderInDirection(GameObject ori, Vector3 direction,
         }
         return boundOri;
     }
+
+    public static void SetUIPosBy3DGameObj(GameObject gobj2d, GameObject gobj3d, Camera camer3d, Camera camera2d, Vector3 offset)
+    {
+        Vector3 v1 = camer3d.WorldToViewportPoint(gobj3d.transform.position + offset);
+        Vector3 v2 = camera2d.ViewportToWorldPoint(v1);
+        v2.z = 0;
+        gobj2d.transform.position = v2;
+    }
 }
 
 public class BtnAction{
