@@ -609,22 +609,72 @@ public static class Tools
         bc.center = new Vector3(0f, bc.size.y / 2f, 0f);
     }
 
-    // Turn on the bit using an OR operation:
-    private static void Show(Camera canera, string someLayer)
+  // Turn on the bit using an OR operation:
+    public static void ShowCameraCullingMask(Camera camera, string someLayer)
     {
         camera.cullingMask |= 1 << LayerMask.NameToLayer(someLayer);
     }
 
     // Turn off the bit using an AND operation with the complement of the shifted int:
-    private static void Hide(Camera camera, string someLayer)
+    public static void HideCameraCullingMask(Camera camera, string someLayer)
     {
         camera.cullingMask &= ~(1 << LayerMask.NameToLayer(someLayer));
     }
 
     // Toggle the bit using a XOR operation:
-    private static void Toggle(Camera camera, string someLayer)
+    public static void ToggleCameraCullingMask(Camera camera, string someLayer)
     {
         camera.cullingMask ^= 1 << LayerMask.NameToLayer(someLayer);
+    }
+
+	  public static void SetGobjPosX(GameObject gobj, float x, bool local = false) 
+    {
+        Vector3 pos = Vector3.zero;
+        if (local)
+        {
+            pos = gobj.transform.localPosition;
+            pos.x = x;
+            gobj.transform.localPosition = pos;
+        }
+        else
+        {
+            pos = gobj.transform.position;
+            pos.x = x;
+            gobj.transform.position = pos;
+        }
+    }
+    public static void SetGobjPosY(GameObject gobj, float y, bool local = false)
+    {
+        Vector3 pos = Vector3.zero;
+        if (local)
+        {
+            pos = gobj.transform.localPosition;
+            pos.y = y;
+            gobj.transform.localPosition = pos;
+        }
+        else
+        {
+            pos = gobj.transform.position;
+            pos.y = y;
+            gobj.transform.position = pos;
+        }
+    }
+
+    public static void SetGobjPosZ(GameObject gobj, float z, bool local = false)
+    {
+        Vector3 pos = Vector3.zero;
+        if (local)
+        {
+            pos = gobj.transform.localPosition;
+            pos.z = z;
+            gobj.transform.localPosition = pos;
+        }
+        else
+        {
+            pos = gobj.transform.position;
+            pos.z = z;
+            gobj.transform.position = pos;
+        }
     }
 }
 
