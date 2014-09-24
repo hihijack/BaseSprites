@@ -676,6 +676,32 @@ public static class Tools
             gobj.transform.position = pos;
         }
     }
+
+    /// <summary>
+    /// 通过名字查找后代物体
+    /// </summary>
+    /// <param name="gobj"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static GameObject GetDescendantGobjByName(GameObject gobj, string name)
+    {
+        GameObject gobjToGet = null;
+        Transform[] trans = gobj.GetComponentsInChildren<Transform>();
+        for (int i = 0; i < trans.Length; i++)
+        {
+            Transform tf = trans[i];
+            if (tf.name.Equals(name))
+            {
+                gobjToGet = tf.gameObject;
+                break;
+            }
+        }
+        if (gobjToGet == null)
+        {
+            Debug.LogWarning("查找后代物体失败:" + name);
+        }
+        return gobjToGet;
+    }
 }
 
 public class BtnAction
