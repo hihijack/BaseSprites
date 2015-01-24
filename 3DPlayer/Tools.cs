@@ -702,6 +702,38 @@ public static class Tools
         }
         return gobjToGet;
     }
+
+    /// <summary>
+    /// 取两个数的最大公约数
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static int GetFactor(int a, int b)
+    {
+        if (a < b) { int t = a; a = b; b = t; }
+        while (b > 0)
+        {
+            int t = a % b;
+            a = b;
+            b = t;
+         }
+        return a;
+    }
+
+    /// <summary>
+    /// 不改的精灵的原始比例的前提下调整其宽度
+    /// </summary>
+    /// <param name="sprite"></param>
+    /// <param name="width"></param>
+    public static void MakeSpritePerfectByWidth(UISprite sprite, int width) 
+    {
+        UISpriteData usd = sprite.GetAtlasSprite();
+        int perfectWidth = usd.width;
+        int perfectHeight = usd.height;
+        sprite.width = width;
+        sprite.height = Mathf.RoundToInt((float)perfectHeight / perfectWidth * width);
+    }
 }
 
 public class BtnAction
