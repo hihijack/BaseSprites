@@ -1,203 +1,109 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
-/// <summary>
-/// Filename: AudioManager.cs
-/// Description: Manager of ground music
-/// Author: Star
-/// Date: [12/4/31]
-/// </summary>
 public class AudioManager : MonoBehaviour {
-    
-    private static AudioManager instance = null;
-    
-    private static AudioSource m_AudioMgr;
-        
-    private AudioClip m_PlayClip;
-    private string m_CurMusicName = "";
-    
-    public static AudioManager Instantiate()
-    {
+//	public static AudioManager Init(){
+//		GameObject gobj = new GameObject();
+//		gobj.name = "AudioManager";
+//		return gobj.AddComponent<AudioManager>();
+//		DontDestroyOnLoad(gobj);
+//	}
 
-		if(instance == null){
-			GameObject obj = new GameObject();
-			obj.name = "MusicPlayer";
-			
-			instance = obj.AddComponent<AudioManager>();
-		
-			m_AudioMgr = obj.AddComponent<AudioSource>();
-		}
-		
-        return instance;
-    }
-    
-	public AudioClip LoadLocal(string audioUrl) {
-//		int id = audioUrl.GetHashCode();
-//		if (_audioClips.ContainsKey(id)) {
-//			return id;
-//		}
+    private static AudioManager instance;
 
-		AudioClip audio = Resources.Load(audioUrl) as AudioClip;
-//		_audioClips.Add(id, audio);
-//		_audioUrls.Add(audioUrl);
-//		_audioSrc.clip = audio;
-		return audio;
-	}
-	
-    /// <summary>
-    /// Play the background music which will go through the scene.
-    /// </summary>
-    /// <param name='fileName'>
-    /// File name.
-    /// </param>
-    public void  PlayBG(string fileName)
+    public static AudioManager _Instance
     {
-      
-			if (!fileName.Equals(m_CurMusicName))
-	        {
-	            m_PlayClip = LoadLocal(fileName);
-	            m_AudioMgr.clip = m_PlayClip;
-				m_AudioMgr.loop = true;
-//			 	if(PlayerPrefs.GetInt(IPrefsKey.Key_Music) == IConst.OPEN){
-//					m_AudioMgr.Play();
-//				}
-       	    	m_CurMusicName = fileName;
-	        }
-    }
-	
-	public void ContinueBG(){
-		m_AudioMgr.Play();
-	}
-    
-    /// <summary>
-    /// Play the background music which will go through the scene.
-    /// </summary>
-    /// <param name='m_PlayClip'>
-    /// M_ play clip.
-    /// </param>
-    public void PlayBG(AudioClip m_PlayClip)
-    {
-        m_AudioMgr.clip = m_PlayClip;
-        m_AudioMgr.Play();
-    }
-    
-    /// <summary>
-    /// Stops the background music.
-    /// </summary>
-    public void StopBG()
-    {
-        m_AudioMgr.Stop();
-        m_CurMusicName = "";
-        //Debug.Log("Stop bm_PlayClipkground music");
-    }
-    
-//    public AudioSource Play(AudioClip clip, Transform emitter, bool loop)
-//    {
-//        return Play(clip, emitter, 1f, 1f, loop);
-//    }
-//    
-//    public AudioSource Play(AudioClip clip, Transform emitter, float volume, bool loop)
-//    {
-//        return Play(clip, emitter, volume, 1f, loop);
-//    }
-//    
-//    /// <summary>
-//    /// Plays a sound by creating an empty game object with an AudioSource
-//    /// and attaching it to the given transform (so it moves with the transform). 
-//    /// Destroys it after it finished playing if it dosen't loop.
-//    /// </summary>
-//    /// <param name='clip'>
-//    /// Clip.
-//    /// </param>
-//    /// <param name='emitter'>
-//    /// Emitter.
-//    /// </param>
-//    /// <param name='volume'>
-//    /// Volume.
-//    /// </param>
-//    /// <param name='pitch'>
-//    /// Pitch.
-//    /// </param>
-//    /// <param name='loop'>
-//    /// Loop.
-//    /// </param>
-//    public AudioSource Play(AudioClip clip, Transform emitter, float volume, float pitch, bool loop)
-//    {
-//        GameObject go = new GameObject("Audio:"+clip.name);
-//        go.transform.position = emitter.position;
-//        go.transform.parent = emitter;
-//        
-//        // create the source
-//        AudioSource source = go.AddComponent<AudioSource>();
-//        source.clip = clip;
-//        source.volume = volume;
-//        source.pitch = pitch;
-//        source.loop = loop;
-//        Debug.Log("clip.length:"+clip.length);
-//        if (!loop)
-//        {
-//            Destroy(go, clip.length);
-//        }
-//        
-//        return source;
-//    }
-	public AudioSource Play(string fileName, bool loop)
-    {
-        
-		return Play(LoadLocal(fileName), Vector3.zero, 1f, 1f, loop);
-		
-    }
-    
-    public AudioSource Play(AudioClip clip, Vector3 point, bool loop)
-    {
-        return Play(clip, point, 1f, 1f, loop);
-    }
-    
-    public AudioSource Play(AudioClip clip, Vector3 point, float volume, bool loop)
-    {
-        return Play(clip, point, volume, 1f, loop);
-    }
-    
-    /// <summary>
-    /// Plays a sound at the given point in space by creating an empty game object with an AudioSource
-    /// in that place and destroys it after it finished playing if it dosen't loop.
-    /// </summary>
-    /// <param name='clip'>
-    /// Clip.
-    /// </param>
-    /// <param name='point'>
-    /// Point.
-    /// </param>
-    /// <param name='volume'>
-    /// Volume.
-    /// </param>
-    /// <param name='pitch'>
-    /// Pitch.
-    /// </param>
-    /// <param name='loop'>
-    /// Loop.
-    /// </param>
-    public AudioSource Play(AudioClip clip, Vector3 point, float volume, float pitch, bool loop)
-    {
-//		if(PlayerPrefs.GetInt(IPrefsKey.Key_Sound) == IConst.CLOSE){
-//			return null;
-//		}
-        GameObject go = new GameObject("Audio:" + clip.name);
-        go.transform.position = point;
-        
-        AudioSource source = go.AddComponent<AudioSource>();
-        source.clip = clip;
-        source.volume = volume;
-        source.pitch = pitch;
-        source.loop = loop;
-		
-		source.Play();
-       
-        if (!loop)
+        get 
         {
-            DestroyObject(go, clip.length);
+            if (AudioManager.instance == null)
+            {
+                GameObject gobj = new GameObject();
+                AudioManager.instance = gobj.AddComponent<AudioManager>();
+                DontDestroyOnLoad(gobj);
+            }
+            return AudioManager.instance; 
         }
-        
-        return source;
     }
+
+	public  void PlaySound(string path, bool loop = false, string name = "AudioSource"){
+		AudioClip ac = Resources.Load(path) as AudioClip;
+		PlaySound(ac, loop, name);
+	}
+	public  GameObject PlaySound(AudioClip ac, bool loop = false, string name = "AudioSource"){
+		if(ac == null){
+			Debug.LogWarning("Play Sound AC Is Null");
+			return null;
+		}
+		GameObject gobjSound = new GameObject();
+		gobjSound.name = name;
+		AudioSource audioS = gobjSound.AddComponent<AudioSource>();
+		audioS.clip = ac;
+		audioS.loop = loop;
+
+		if((loop && GameManager.enableMusic) || (!loop && GameManager.enableSound)){
+			audioS.Play();
+		}
+
+		if(!loop){
+			Destroy (gobjSound, ac.length);
+		}
+
+		return gobjSound;
+	}
+
+	public  void StopSound(string name){
+		GameObject gobjSound = GameObject.Find(name);
+		if(gobjSound != null){
+			AudioSource audio = gobjSound.GetComponent<AudioSource>();
+			audio.Stop();
+		}
+	}
+
+    public void PauseSound(string name) 
+    {
+        GameObject gobjSound = GameObject.Find(name);
+        if (gobjSound != null)
+        {
+            AudioSource audio = gobjSound.GetComponent<AudioSource>();
+            audio.Pause();
+        }
+    }
+
+	public  bool ContineSound(string name){
+		bool success = false;
+		GameObject gobjSound = GameObject.Find(name);
+		if(gobjSound != null){
+			AudioSource audio = gobjSound.GetComponent<AudioSource>();
+			if(!audio.isPlaying){
+				audio.Play();
+			}
+			success = true;
+		}
+
+		return success;
+	}
+
+    /// <summary>
+    /// 在durTime内淡出音乐
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="durTime"></param>
+    public  void FadeOutSound(string name, float durTime) 
+    {
+        GameObject gobjSound = GameObject.Find(name);
+        if (gobjSound != null)
+        {
+            AudioSource audio = gobjSound.GetComponent<AudioSource>();
+            if (audio.isPlaying)
+            {
+                TweenVolume tv = gobjSound.AddComponent<TweenVolume>();
+                tv.from = audio.volume;
+                tv.to = 0f;
+                tv.duration = durTime;
+                tv.PlayForward();
+            }
+        }
+    }
+
+    
 }
